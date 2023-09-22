@@ -16,3 +16,31 @@ img {
   display: block;
   max-width: 100%;
 }
+
+input[type="text"] {
+  padding: 10px;
+}
+
+button {
+  padding: 10px 20px;
+}
+
+.timer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.field {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.value {
+  font-size: 24px;
+}
+
+.label {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 5px;
+}

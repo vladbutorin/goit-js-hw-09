@@ -1,9 +1,10 @@
-import * as Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
+
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
+    const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
-      const shouldResolve = Math.random() > 0.3;
       if (shouldResolve) {
         resolve({ position, delay });
       } else {
@@ -13,16 +14,29 @@ function createPromise(position, delay) {
   });
 }
 
-createPromise(2, 1500)
-  .then(({ position, delay }) => {
-    Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
 
-Notiflix.Notify.success('Click Me', {
-  timeout: 6000,
+document.querySelector('.form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  let delay = parseInt(e.target.elements.delay.value);
+  let step = parseInt(e.target.elements.step.value);
+  const amount = parseInt(e.target.elements.amount.value);
+
+  
+  if (isNaN(delay) || isNaN(step) || isNaN(amount)) {
+    Notiflix.Notify.failure('Please enter valid numbers');
+    return;
+  }
+
+  
+  for (let i = 0; i < amount; i++) {
+    try {
+      const result = await createPromise(i + 1, delay);
+      Notiflix.Notify.success(`✅ Fulfilled promise ${result.position} in ${result.delay}ms`);
+    } catch (error) {
+      Notiflix.Notify.failure(`❌ Rejected promise ${error.position} in ${error.delay}ms`);
+    }
+    
+    delay += step;
+  }
 });
-
-
